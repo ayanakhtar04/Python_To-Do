@@ -127,4 +127,40 @@ try:
 except ValueError:
     # This block runs ONLY if the int() conversion fails
     print("Invalid input. Please enter a number.")
+
+### 8. Saving and Loading Tasks (File I/O)
+
+To make sure our tasks aren't lost when the program closes, we save them to a file (`tasks.txt`) and load them back when the program starts. This is called "persistence".
+
+**Syntax for opening a file:**
+```python
+# 'r' for read, 'w' for write
+with open("filename.txt", "r") as f:
+    # do something with the file object 'f'
+```
+The `with` statement is the recommended way to work with files as it automatically handles closing the file for you, even if errors occur.
+
+**Example from the code (`todo_app.py`):**
+The `load_tasks` function reads from the file.
+```python
+def load_tasks():
+    try:
+        with open(FILE_NAME, 'r') as f:
+            tasks = [line.strip() for line in f.readlines()]
+    except FileNotFoundError:
+        # If the file doesn't exist on the first run, do nothing.
+        pass
+```
+- We use `try...except FileNotFoundError` because the file won't exist the very first time you run the app.
+- `f.readlines()` reads all lines from the file into a list of strings. Each string includes an invisible newline character (`\n`) at the end, so we use `line.strip()` to remove it.
+
+The `save_tasks` function writes to the file.
+```python
+def save_tasks():
+    with open(FILE_NAME, 'w') as f:
+        for task in tasks:
+            f.write(task + '\n')
+```
+- Opening a file in `'w'` (write) mode will overwrite its contents. This is what we want, to save the most up-to-date list of tasks.
+- We add `'\n'` to each task before writing to ensure every task is on a new line in the file.
 ```
