@@ -6,6 +6,7 @@ The application allows a user to:
 - Add new tasks.
 - View all current tasks.
 - Mark a task as complete.
+- Delete a task.
 - Exit the application.
 
 ## How to Run

@@ -36,7 +36,8 @@ def display_menu():
     print("1. Add a task")
     print("2. View tasks")
     print("3. Mark a task as complete")
-    print("4. Exit")
+    print("4. Delete a task")
+    print("5. Exit")
 
 def add_task():
     """
@@ -97,6 +98,35 @@ def mark_task_complete():
         # Handle cases where the input is not a number
         print("Invalid input. Please enter a number.")
 
+def delete_task():
+    """
+    Deletes a specific task from the list.
+    Includes error handling for invalid user input.
+    """
+    # Show tasks first so the user can choose which one to delete
+    view_tasks()
+
+    # Don't proceed if there are no tasks to delete
+    if not tasks:
+        return
+
+    try:
+        task_number_str = input("Enter the number of the task to delete: ")
+        task_number = int(task_number_str)
+
+        # Convert the 1-based number to a 0-based list index
+        task_index = task_number - 1
+
+        # Check if the user-provided number is a valid index
+        if 0 <= task_index < len(tasks):
+            # Use pop() to remove the task and get its value for the confirmation message
+            removed_task = tasks.pop(task_index)
+            print(f"Task '{removed_task.split(' [DONE]')[0]}' deleted successfully!")
+        else:
+            print("Invalid task number. Please try again.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+
 def main():
     """
     (Step 1)
@@ -107,7 +137,7 @@ def main():
 
     while True:
         display_menu()
-        choice = input("Choose an option (1-4): ")
+        choice = input("Choose an option (1-5): ")
 
         if choice == '1':
             add_task()
@@ -116,12 +146,14 @@ def main():
         elif choice == '3':
             mark_task_complete()
         elif choice == '4':
+            delete_task()
+        elif choice == '5':
             # Save tasks to the file before exiting.
             save_tasks()
             print("Exiting the To-Do List application. Goodbye!")
             break  # Exit the while loop
         else:
-            print("Invalid choice. Please enter a number between 1 and 4.")
+            print("Invalid choice. Please enter a number between 1 and 5.")
 
 # This ensures the `main` function is called only when the script is executed directly
 if __name__ == "__main__":
