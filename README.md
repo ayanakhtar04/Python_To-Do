@@ -128,7 +128,7 @@ try:
 except ValueError:
     # This block runs ONLY if the int() conversion fails
     print("Invalid input. Please enter a number.")
-
+```
 ### 8. Saving and Loading Tasks (File I/O)
 
 To make sure our tasks aren't lost when the program closes, we save them to a file (`tasks.txt`) and load them back when the program starts. This is called "persistence".
