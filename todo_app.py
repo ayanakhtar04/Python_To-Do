@@ -2,8 +2,33 @@
 A simple command-line To-Do List application in Python.
 """
 
+# Define a constant for the filename to avoid "magic strings".
+FILE_NAME = "tasks.txt"
+
 # This list will store all the tasks. It's defined globally so all functions can access it.
 tasks = []
+
+def load_tasks():
+    """
+    Loads tasks from the tasks.txt file when the application starts.
+    Uses a try-except block to handle the case where the file doesn't exist yet.
+    """
+    global tasks
+    try:
+        # 'with open' ensures the file is automatically closed.
+        with open(FILE_NAME, 'r') as f:
+            # Read all lines, and use a list comprehension to strip the newline character from each.
+            tasks = [line.strip() for line in f.readlines()]
+    except FileNotFoundError:
+        # It's okay if the file doesn't exist on the first run.
+        # It will be created when the user exits.
+        pass # Do nothing, tasks list will remain empty.
+
+def save_tasks():
+    """Saves the current list of tasks to tasks.txt before exiting."""
+    with open(FILE_NAME, 'w') as f:
+        for task in tasks:
+            f.write(task + '\n')
 
 def display_menu():
     """Displays the main menu to the user."""
@@ -77,6 +102,9 @@ def main():
     (Step 1)
     The main function that runs the application loop.
     """
+    # Load any existing tasks from the file when the program starts.
+    load_tasks()
+
     while True:
         display_menu()
         choice = input("Choose an option (1-4): ")
@@ -88,6 +116,8 @@ def main():
         elif choice == '3':
             mark_task_complete()
         elif choice == '4':
+            # Save tasks to the file before exiting.
+            save_tasks()
             print("Exiting the To-Do List application. Goodbye!")
             break  # Exit the while loop
         else:
